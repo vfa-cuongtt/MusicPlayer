@@ -9,34 +9,47 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Image,
+  Navigator
 } from 'react-native';
+import SplashView from './components/splashView.js';
+import HomeView from './components/homeView.js'
+import PlayView from './components/playView.js';
 
-export default class MusicPlayer extends Component {
+class MusicPlayer extends Component {
+  renderScene(route,navigator){
+    switch (route.name) {
+      case 'splashView':
+        return (
+          <SplashView
+            clickHome={()=>{navigator.push({name:'homeView'})}}
+          />);
+      case 'homeView':
+        return (<HomeView/>);
+      // case 'playView':
+      //   return (<PlayView/>);
+        break;
+      default:
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <Navigator
+        initialRoute={{name:'homeView'}}
+        renderScene={this.renderScene}
+      />
+      // <Text>
+      //   Hello
+      // </Text>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    flex: 1
   },
   welcome: {
     fontSize: 20,
@@ -48,6 +61,10 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  img:{
+    width:415,
+    height:660
+  }
 });
 
 AppRegistry.registerComponent('MusicPlayer', () => MusicPlayer);
