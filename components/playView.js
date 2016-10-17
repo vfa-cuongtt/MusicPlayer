@@ -1,13 +1,15 @@
 import React , {Component} from 'react';
 import {
   StyleSheet,
-  View,
+  View,Navigator,
   Text,Image,TextInput,TouchableOpacity,ListView,ActivityIndicatorIOS
 } from 'react-native';
 
-export default class PlayView {
-  constructor() {
 
+class PlayView extends Component {
+  constructor(props) {
+    super(props);
+    this.state={};
   }
 
   render(){
@@ -19,10 +21,10 @@ export default class PlayView {
           </View>
           <View style={{flexDirection:'row',marginTop:10}}>
 
-            <TextInput
-                 style={styles.textInput}
-                 onChangeText={(text) => this.setState({text})}
-                 value={this.state.text} />
+          <TextInput
+               style={styles.textInput}
+               onChangeText={(text) => this.setState({text})}
+               value={this.state.text} />
 
               <Image
                 style={{width:50,height:30,marginTop:15}}
@@ -33,33 +35,21 @@ export default class PlayView {
         </View>
 
         <View style={styles.bottom}>
-          <View style={{ flexDirection:'row', justifyContent:'center'}}>
-
-              <View style={styles.menu}>
-                <TouchableOpacity onPress={() => { this.clickListSong() }} >
-                  <Text>List Song</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.menu}>
-                <TouchableOpacity onPress={() => { this.clickAlbum() }}>
-                  <Text>Album</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.menu}>
-                <TouchableOpacity onPress={ () =>{ this.clickSinger() }}>
-                  <Text>Singer</Text>
-                </TouchableOpacity>
-              </View>
-
-          </View>
-
-          <View style={{marginTop:10}}>
-            <Text>
-              Hello
+          <View style={{backgroundColor:'yellow',flex:1/3,}}>
+            <Text style={{fontSize:30}}>
+              {this.props.songObject.name}
             </Text>
           </View>
+          <View style={{backgroundColor:'grey',flex:2/3,}}>
+            <Image
+              style={{width:50,height:50}}
+              source={require('../images/pikachu.jpg')}
+            />
+          </View>
+          <View style={{backgroundColor:'pink',flex:1/3,}}>
+
+          </View>
+
 
         </View>
 
@@ -113,3 +103,4 @@ const styles = StyleSheet.create({
   }
 
 });
+module.exports =  PlayView;

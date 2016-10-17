@@ -6,7 +6,8 @@ import {
   TouchableOpacity
 } from "react-native";
 
-export default class SplashView extends Component {
+
+class SplashView extends Component {
   render(){
     return(
       <View style={styles.container}>
@@ -48,3 +49,4 @@ const styles = StyleSheet.create({
 
   }
 });
+module.exports = SplashView;

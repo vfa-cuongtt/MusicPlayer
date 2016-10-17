@@ -19,16 +19,17 @@ import PlayView from './components/playView.js';
 
 class MusicPlayer extends Component {
   renderScene(route,navigator){
-    switch (route.name) {
-      case 'splashView':
+    _navigator = navigator;
+    switch (route.id) {
+      case 'SplashView':
         return (
-          <SplashView
-            clickHome={()=>{navigator.push({name:'homeView'})}}
+          <SplashView navigator={navigator} />);
+      case 'HomeView':
+        return (<HomeView navigator={navigator} />);
+      case 'PlayView':
+        return (<PlayView navigator={navigator}
+          songObject={route.passProps.songObject}
           />);
-      case 'homeView':
-        return (<HomeView/>);
-      // case 'playView':
-      //   return (<PlayView/>);
         break;
       default:
     }
@@ -37,7 +38,7 @@ class MusicPlayer extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{name:'homeView'}}
+        initialRoute={{id:'HomeView'}}
         renderScene={this.renderScene}
       />
       // <Text>

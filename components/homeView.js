@@ -2,27 +2,15 @@ import React,{Component} from 'react';
 import {
   StyleSheet,
   View,
-  Text,Image,TextInput,TouchableOpacity,ListView,ActivityIndicatorIOS
+  Text,Image,TextInput,TouchableOpacity,ListView,ActivityIndicatorIOS,Navigator
 } from 'react-native';
-import PlayView from './components/playView.js';
 
 var RNFS = require('react-native-fs');
-
-// var DATA = [
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-//   {song:'Mat Den'},
-// ]
 var DATA = new Array();
 
-export default class HomeView extends Component {
+
+class HomeView extends Component {
+  // load data from Bundle
   loadData(callback){
     RNFS.readDir(RNFS.MainBundlePath + '/mp3files')
     .then((result) => {
@@ -30,7 +18,7 @@ export default class HomeView extends Component {
       for (var i = 0; i < result.length; i++) {
         DATA.push(result[i]);
       }
-
+      console.log('DATA',DATA);
       callback(DATA);
       this.setState({
         dataList:this.state.dataSource.cloneWithRows(DATA),
@@ -43,51 +31,42 @@ export default class HomeView extends Component {
     });
   }
 
+  // tap List Song menu
   clickListSong(){
     console.log('Click List Song');
 
   }
-
+  // tap Album menu
   clickAlbum(){
     console.log('Click Album');
   }
 
+  //tap Singer menu
   clickSinger(){
     console.log('Click Singer');
   }
 
-  renderScene(route,navigator){
-    switch (route.name) {
-      case 'playView':
-        return (
-          <HomeView
-            clickHome={()=>{navigator.push({nameView:'playView'})}}
-          />);
-
-        break;
-      default:
-    }
+  navPlayView(detail){
+      this.props.navigator.push({
+        id:'PlayView',
+        passProps:{
+          songObject:detail
+        }
+      })
   }
 
-  playSong(){
-    return (
-      <Navigator
-        initialRoute={{nameView:'playView'}}
-        renderScene={this.renderScene}
-      />
-    );
-  }
-
+  // Render rows item in list view
   renderRows(property){
     return(
       <View style={styles.listItem}>
-        <TouchableOpacity onPress={this.playSong()}>
+        <TouchableOpacity onPress={this.navPlayView.bind(this,property)}>
           <Image
             style={{width:50,height:50}}
             source={require('../images/pikachu.jpg')}
           />
-          <Text style={{paddingLeft:10}} >{property.name}</Text>
+          <Text style={{paddingLeft:100}} >{property.name}</Text>
         </TouchableOpacity>
+
       </View>
     );
   }
@@ -107,8 +86,8 @@ export default class HomeView extends Component {
       return(
         (
           <ActivityIndicatorIOS
-            size='large' style={styles.container}/>     )
-
+            size='large' style={styles.container}/>
+        )
       );
 
     }else {
@@ -137,7 +116,7 @@ export default class HomeView extends Component {
             <View style={{ flexDirection:'row', justifyContent:'center'}}>
 
                 <View style={styles.menu}>
-                  <TouchableOpacity onPress={() => { this.clickListSong() }} >
+                  <TouchableOpacity onPress={this.navPlayView.bind(this)} >
                     <Text>List Song</Text>
                   </TouchableOpacity>
                 </View>
@@ -159,7 +138,7 @@ export default class HomeView extends Component {
             <View style={{marginTop:10}}>
               <ListView
                 dataSource={this.state.dataList}
-                renderRow={this.renderRows}
+                renderRow={this.renderRows.bind(this)}
               />
             </View>
 
@@ -217,3 +196,4 @@ const styles = StyleSheet.create({
   }
 
 });
+module.exports = HomeView;
